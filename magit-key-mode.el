@@ -703,20 +703,11 @@ Return the point before the actions part, if any, nil otherwise."
 
 (defun magit-key-mode-generate (group)
   "Generate the key-group menu for GROUP."
-  (let* ((opts (magit-key-mode-options-for-group group))
-         (name (concat "magit-key-mode-popup-" (symbol-name group)))
-         (name-hook (concat name "-hook")))
+  (let ((opts (magit-key-mode-options-for-group group)))
     (eval
-     `(defcustom ,(intern name-hook)
-        '()
-        ,(concat "List of functions to be called when displaying magit popup key for group " (symbol-name group))
-        :group 'magit
-        :type 'hook))
-    (eval
-     `(defun ,(intern name) nil
+     `(defun ,(intern (concat "magit-key-mode-popup-" (symbol-name group))) nil
         ,(concat "Key menu for " (symbol-name group))
         (interactive)
-        (run-hooks ',(intern name-hook))
         (magit-key-mode
          (quote ,group)
          ;; As a tempory kludge it is okay to do this here.
